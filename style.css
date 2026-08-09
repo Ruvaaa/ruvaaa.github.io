@@ -15,41 +15,94 @@ body {
     line-height: 1.6;
     background-color: #FFF9FC;
     overflow-x: hidden;
+    position: relative;
 }
 
 /* -------------------------------------------------- */
-/* Keyframe Animations */
+/* Keyframes Extravaganza */
 /* -------------------------------------------------- */
 
-/* Soft floating effect for images */
+/* 1. Floating background bubbles */
+@keyframes riseAndSway {
+    0% {
+        transform: translateY(105vh) scale(0.6) rotate(0deg);
+        opacity: 0;
+    }
+    20% { opacity: 0.6; }
+    80% { opacity: 0.6; }
+    100% {
+        transform: translateY(-10vh) scale(1.2) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* 2. Soft bobbing/floating for images */
 @keyframes floaty {
-    0%, 100% {
-        transform: translateY(0px) rotate(0deg);
-    }
-    50% {
-        transform: translateY(-10px) rotate(1.5deg);
-    }
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-12px) rotate(2deg); }
 }
 
-/* Gentle pulse glow for action buttons */
+/* 3. Shimmer text gradient animation */
+@keyframes rainbowShimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* 4. Pulsing glow for action buttons */
 @keyframes pulseGlow {
     0%, 100% {
-        box-shadow: 0 6px 18px rgba(255, 112, 166, 0.35);
+        box-shadow: 0 6px 18px rgba(255, 112, 166, 0.4), 0 0 0 0 rgba(255, 112, 166, 0.3);
     }
     50% {
-        box-shadow: 0 8px 25px rgba(255, 112, 166, 0.65);
+        box-shadow: 0 10px 25px rgba(255, 112, 166, 0.7), 0 0 0 12px rgba(255, 112, 166, 0);
     }
 }
 
-/* Cute subtle wiggle for navbar logo or interactive text */
+/* 5. Playful wiggle */
 @keyframes wiggle {
     0%, 100% { transform: rotate(0deg); }
-    25% { transform: rotate(-3deg); }
-    75% { transform: rotate(3deg); }
+    25% { transform: rotate(-8deg); }
+    75% { transform: rotate(8deg); }
+}
+
+/* 6. Heartbeat bounce for main headers */
+@keyframes cuteBounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.04); }
 }
 
 /* -------------------------------------------------- */
-/* Navigation */
+/* Floating Ambient Bubbles */
+/* -------------------------------------------------- */
+.bubble-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.bubble {
+    position: absolute;
+    bottom: -50px;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(255, 182, 193, 0.3));
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    animation: riseAndSway 12s infinite linear;
+}
+
+.bubble:nth-child(1) { left: 10%; width: 40px; height: 40px; animation-duration: 10s; animation-delay: 0s; }
+.bubble:nth-child(2) { left: 25%; width: 25px; height: 25px; animation-duration: 14s; animation-delay: 2s; }
+.bubble:nth-child(3) { left: 55%; width: 50px; height: 50px; animation-duration: 11s; animation-delay: 1s; }
+.bubble:nth-child(4) { left: 75%; width: 30px; height: 30px; animation-duration: 13s; animation-delay: 4s; }
+.bubble:nth-child(5) { left: 90%; width: 45px; height: 45px; animation-duration: 9s; animation-delay: 3s; }
+
+/* -------------------------------------------------- */
+/* Navigation Bar */
 /* -------------------------------------------------- */
 .navbar {
     position: fixed;
@@ -58,15 +111,20 @@ body {
     transform: translateX(-50%);
     width: 90%;
     max-width: 800px;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(12px);
     padding: 0.8rem 2rem;
     z-index: 100;
     display: flex;
     justify-content: center;
     border-radius: 50px;
     border: 2px solid #FFE5EC;
-    box-shadow: 0 8px 25px rgba(255, 182, 193, 0.25);
+    box-shadow: 0 8px 25px rgba(255, 182, 193, 0.3);
+    transition: all 0.4s ease;
+}
+
+.navbar:hover {
+    box-shadow: 0 12px 30px rgba(255, 112, 166, 0.4);
 }
 
 .navbar ul {
@@ -82,17 +140,35 @@ body {
     font-size: 1.05rem;
     transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     display: inline-block;
+    position: relative;
+}
+
+/* Animated hover indicator dot */
+.navbar ul li a::after {
+    content: '•';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%) scale(0);
+    color: #FF70A6;
+    font-size: 1.2rem;
+    transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.navbar ul li a:hover::after,
+.navbar a.active::after {
+    transform: translateX(-50%) scale(1);
 }
 
 .navbar ul li a:hover,
 .navbar a.active {
     color: #FF70A6;
-    transform: translateY(-3px) scale(1.1);
+    transform: translateY(-3px) scale(1.12);
     animation: wiggle 0.4s ease-in-out;
 }
 
 /* -------------------------------------------------- */
-/* Sections */
+/* Sections & Text */
 /* -------------------------------------------------- */
 .section {
     min-height: 100vh;
@@ -102,7 +178,9 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
-    transition: all 0.6s ease-in-out;
+    position: relative;
+    z-index: 2;
+    transition: background-color 0.8s ease, color 0.8s ease;
 }
 
 .section.light {
@@ -121,25 +199,23 @@ body {
     margin-bottom: 1.2rem;
     font-size: 2.8rem;
     letter-spacing: 0.5px;
-    transition: transform 0.3s ease;
-}
-
-.section h1:hover, .section h2:hover {
-    transform: scale(1.03);
-}
-
-.section.light h1, .section.light h2 {
-    color: #FF70A6;
-}
-
-.section.dark h1, .section.dark h2 {
-    color: #FFD166;
+    /* Shimmer Effect */
+    background: linear-gradient(90deg, #FF70A6, #FF9770, #FFD166, #FF70A6);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rainbowShimmer 6s ease infinite, cuteBounce 4s ease-in-out infinite;
 }
 
 .section p {
     max-width: 600px;
     font-size: 1.15rem;
     margin-bottom: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.section p:hover {
+    transform: scale(1.02);
 }
 
 /* -------------------------------------------------- */
@@ -147,7 +223,7 @@ body {
 /* -------------------------------------------------- */
 .invisible {
     opacity: 0;
-    transform: translateY(40px) scale(0.92);
+    transform: translateY(50px) scale(0.9);
 }
 
 .visible {
@@ -157,7 +233,7 @@ body {
 }
 
 /* -------------------------------------------------- */
-/* Content Layout & Animated Images */
+/* Image Animations */
 /* -------------------------------------------------- */
 .row {
     display: flex;
@@ -175,41 +251,45 @@ body {
     width: 280px;
     height: auto;
     border-radius: 24px;
-    border: 4px solid #FFFFFF;
-    box-shadow: 0 10px 25px rgba(255, 112, 166, 0.2);
-    /* Continuous floating animation */
+    border: 5px solid #FFFFFF;
+    box-shadow: 0 10px 25px rgba(255, 112, 166, 0.25);
     animation: floaty 4s ease-in-out infinite;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .section-image:hover {
-    /* Pause float on hover for interactive feel */
     animation-play-state: paused;
-    transform: scale(1.05) rotate(-2deg);
-    box-shadow: 0 15px 30px rgba(255, 112, 166, 0.35);
+    transform: scale(1.08) rotate(-3deg);
+    box-shadow: 0 20px 35px rgba(255, 112, 166, 0.45);
+    border-color: #FFE5EC;
 }
 
 .text-block {
     max-width: 500px;
 }
 
+/* Interactive Project Cards */
 .project-list p {
     font-size: 1.1rem;
-    margin: 10px 0;
+    margin: 12px 0;
     background: #FFFFFF;
-    padding: 12px 20px;
-    border-radius: 18px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-    transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55), box-shadow 0.3s ease;
+    padding: 14px 22px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    border: 2px solid transparent;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    cursor: pointer;
 }
 
 .project-list p:hover {
-    transform: translateX(8px) scale(1.02);
-    box-shadow: 0 6px 16px rgba(255, 112, 166, 0.15);
+    transform: translateX(12px) scale(1.03);
+    border-color: #FF70A6;
+    box-shadow: 0 8px 20px rgba(255, 112, 166, 0.2);
+    background: #FFF0F5;
 }
 
 /* -------------------------------------------------- */
-/* Contact Section & Cute Buttons */
+/* Contact Section & Pulsing Buttons */
 /* -------------------------------------------------- */
 #contact.section.light {
     background-color: #FFF0F5;
@@ -226,27 +306,30 @@ body {
 .social-btn {
     background: linear-gradient(135deg, #FF70A6, #FF9770);
     color: white;
-    padding: 12px 26px;
+    padding: 14px 28px;
     border-radius: 50px;
     text-decoration: none;
     font-weight: 700;
     font-size: 1rem;
-    /* Pulsing glow animation */
-    animation: pulseGlow 3s infinite;
+    animation: pulseGlow 2.5s infinite;
     transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .social-btn:hover {
-    transform: translateY(-5px) scale(1.08);
-    box-shadow: 0 12px 25px rgba(255, 112, 166, 0.5);
+    transform: translateY(-6px) scale(1.1);
+    animation: none;
+    box-shadow: 0 15px 30px rgba(255, 112, 166, 0.6);
 }
 
 .social-btn:active {
-    transform: translateY(-1px) scale(0.98);
+    transform: translateY(-2px) scale(0.96);
 }
 
 /* -------------------------------------------------- */
-/* Responsive */
+/* Responsive Adjustments */
 /* -------------------------------------------------- */
 @media (max-width: 768px) {
     .navbar {
